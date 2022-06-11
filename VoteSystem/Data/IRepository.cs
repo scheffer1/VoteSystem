@@ -1,10 +1,11 @@
-﻿namespace VoteSystem.Data;
+﻿using VoteSystem.Models;
+
+namespace VoteSystem.Data;
 
 public interface IRepository
 {
-    void Add<T>(T entity) where T : class;
-    void Update<T>(T entity) where T : class;
-    void Delete<T>(T entity) where T : class;
     Task<bool> SaveChangesAsync();
-
+    Task<Poll[]> GetOptionsByPollId(int idPoll);
+    Task<Poll[]> getAll();
+    
 }

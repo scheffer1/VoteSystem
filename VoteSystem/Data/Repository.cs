@@ -7,6 +7,10 @@ namespace VoteSystem.Data;
 public class Repository : IRepository
 {
     private readonly DataContext _context;
+    public Repository(DataContext context)
+    {
+        _context = context;
+    }
     public void Add<T>(T entity) where T : class
     {
         _context.Add(entity);
@@ -24,10 +28,17 @@ public class Repository : IRepository
         return (await _context.SaveChangesAsync()) > 0;
     }
     
-    public async Task<Poll[]> GetOptionsByPollId(int PollId)
+    public async Task<Poll[]> GetOptionsByPollId(int idPoll)
     {
         IQueryable<Poll> query = _context.Poll;
-        query = query.Include(p => p.Options);
+        query = query.Include("Options").Where(poll => poll.id == idPoll);
+        return await query.ToArrayAsync();
+    }
+    
+    public async Task<Poll[]> getAll()
+    {
+        IQueryable<Poll> query = _context.Poll;
+        query = query;
         return await query.ToArrayAsync();
     }
 }
