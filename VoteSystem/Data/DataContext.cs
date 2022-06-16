@@ -8,6 +8,7 @@ public class DataContext : DbContext
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     public DbSet<Options> Options { get; set; }
     public DbSet<Poll> Poll { get; set; }
+    public DbSet<Vote> Vote { get; set; }
     
     public DataContext(){}
 
@@ -23,9 +24,16 @@ public class DataContext : DbContext
     {
         modelBuilder.Entity<Options>()
             .HasOne<Poll>(s => s.poll)
-            .WithMany(o => o.Options)
+            .WithMany(o => o.options)
             .HasForeignKey(o => o.PollId);
+
         modelBuilder.Entity<Poll>()
             .HasKey(p => p.id);
+
+        modelBuilder.Entity<Vote>()
+            .HasOne<Options>(p => p.options)
+            .WithMany(v => v.Vote)
+            .HasForeignKey(v => v.idOpts);
+
     }
 }

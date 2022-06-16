@@ -37,9 +37,6 @@ namespace VoteSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("voteCounter")
-                        .HasColumnType("int");
-
                     b.HasKey("id");
 
                     b.HasIndex("PollId");
@@ -74,10 +71,28 @@ namespace VoteSystem.Migrations
                     b.ToTable("Poll");
                 });
 
+            modelBuilder.Entity("VoteSystem.Models.Vote", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("idOpts")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("idOpts");
+
+                    b.ToTable("Vote");
+                });
+
             modelBuilder.Entity("VoteSystem.Models.Options", b =>
                 {
                     b.HasOne("VoteSystem.Models.Poll", "poll")
-                        .WithMany("Options")
+                        .WithMany("options")
                         .HasForeignKey("PollId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -85,9 +100,25 @@ namespace VoteSystem.Migrations
                     b.Navigation("poll");
                 });
 
+            modelBuilder.Entity("VoteSystem.Models.Vote", b =>
+                {
+                    b.HasOne("VoteSystem.Models.Options", "options")
+                        .WithMany("Vote")
+                        .HasForeignKey("idOpts")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("options");
+                });
+
+            modelBuilder.Entity("VoteSystem.Models.Options", b =>
+                {
+                    b.Navigation("Vote");
+                });
+
             modelBuilder.Entity("VoteSystem.Models.Poll", b =>
                 {
-                    b.Navigation("Options");
+                    b.Navigation("options");
                 });
 #pragma warning restore 612, 618
         }

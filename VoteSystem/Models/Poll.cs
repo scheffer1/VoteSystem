@@ -6,7 +6,7 @@ public class Poll
 
     public Poll(ICollection<Options> options, string name, int id, string descri, DateTime horaInicio, DateTime horafinal)
     {
-        Options = options;
+        this.options = options;
         this.name = name;
         this.id = id;
         this.descri = descri;
@@ -14,7 +14,7 @@ public class Poll
         this.horafinal = horafinal;
     }
 
-    public ICollection<Options> Options { get; set; }
+    public ICollection<Options> options { get; set; }
     public string name { get; set; }
 
     public int id { get; set; }

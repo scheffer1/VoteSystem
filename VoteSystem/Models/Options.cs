@@ -4,17 +4,19 @@ namespace VoteSystem.Models;
 
 public class Options
 {
-    public Options(int id, int pollId, string name, int voteCounter)
+    public Options() {}
+    public Options(ICollection<Vote> vote, int id, int pollId, string name)
     {
+        Vote = vote;
         this.id = id;
         PollId = pollId;
         this.name = name;
-        this.voteCounter = voteCounter;
     }
 
+    public ICollection<Vote> Vote { get; set; }
     public int id { get; set; }
     public int PollId { get; set; }
     public Poll poll  { get; set; }
     public string name { get; set; }
-    public int voteCounter { get; set; }
+    
 }
